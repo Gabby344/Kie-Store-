@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Kie Store - Gestion de Stock & Ventes</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <title>Kie Store - Gestion de Stock & Ventes | Kolwezi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
@@ -16,43 +16,96 @@
         }
 
         body {
-            background: linear-gradient(135deg, #f5f7fc 0%, #eef2f9 100%);
-            color: #1e293b;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e6edfc 100%);
+            color: #1a1f2e;
             padding: 20px;
             min-height: 100vh;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1440px;
             margin: 0 auto;
         }
 
-        /* Header */
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 0 0 rgba(30, 58, 138, 0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(30, 58, 138, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(30, 58, 138, 0); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        /* Header Premium */
         .header {
+            background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            border-radius: 32px;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: white;
-            padding: 1rem 2rem;
-            border-radius: 28px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            margin-bottom: 2rem;
             flex-wrap: wrap;
-            gap: 16px;
+            gap: 20px;
+            border: 1px solid rgba(255,255,255,0.5);
+            transition: all 0.3s;
         }
 
         .logo h1 {
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            font-size: 1.9rem;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6, #60a5fa);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            letter-spacing: -0.5px;
         }
 
         .logo p {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #5b6e8c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
         }
+
+        .store-info {
+            background: linear-gradient(135deg, #fef9e3, #fef3c7);
+            padding: 8px 20px;
+            border-radius: 48px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #b45309;
+            border: 1px solid #fed7aa;
+        }
+
+        .admin-badge {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            padding: 8px 20px;
+            border-radius: 48px;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+        }
+
+        .admin-badge i { font-size: 1rem; }
 
         .currency-toggle {
             display: flex;
@@ -60,6 +113,7 @@
             background: #f1f5f9;
             padding: 4px;
             border-radius: 48px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         }
 
         .currency-btn {
@@ -70,193 +124,187 @@
             font-weight: 600;
             border-radius: 40px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: none;
         }
 
         .currency-btn.active {
-            background: #1e3a8a;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
             color: white;
-            box-shadow: 0 2px 8px rgba(30,58,138,0.3);
+            box-shadow: 0 4px 12px rgba(30,58,138,0.3);
+            transform: scale(1.02);
         }
 
-        .auth-card {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .admin-badge {
-            background: #eef2ff;
-            padding: 8px 18px;
-            border-radius: 40px;
-            font-weight: 600;
-            color: #1e3a8a;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        button {
-            background: #1e3a8a;
-            border: none;
-            color: white;
-            padding: 10px 24px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.9rem;
-        }
-
-        button.danger { background: #dc2626; }
-        button.secondary { background: #64748b; }
-        button.success { background: #16a34a; }
-        button.warning { background: #f59e0b; }
-        button:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-
-        /* Stats */
+        /* Stats Cards avec effets */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
         }
 
         .stat-card {
-            background: white;
-            border-radius: 28px;
+            background: linear-gradient(135deg, #ffffff, #fefefe);
+            border-radius: 32px;
             padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            transition: all 0.3s;
-            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border: 1px solid rgba(59,130,246,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #1e3a8a, #60a5fa, #1e3a8a);
+            transform: scaleX(0);
+            transition: transform 0.4s;
         }
 
         .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 35px -12px rgba(30,58,138,0.2);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
         }
 
         .stat-title {
             font-size: 0.85rem;
             text-transform: uppercase;
             color: #5b6e8c;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
             font-weight: 600;
         }
 
         .stat-value {
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             font-weight: 800;
-            margin-top: 8px;
-            color: #1e293b;
+            margin-top: 12px;
+            background: linear-gradient(135deg, #1e293b, #1e3a8a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
-        .stat-sub {
-            font-size: 0.75rem;
-            color: #64748b;
-            margin-top: 6px;
-        }
-
-        /* Tabs */
+        /* Tabs stylisées */
         .tabs {
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
-            margin-bottom: 24px;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 8px;
+            margin-bottom: 28px;
         }
 
         .tab-btn {
-            background: transparent;
-            color: #475569;
-            box-shadow: none;
-            border-radius: 40px;
-            padding: 10px 24px;
-            font-weight: 500;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(4px);
+            color: #334155;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            border-radius: 48px;
+            padding: 12px 28px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 1px solid rgba(59,130,246,0.2);
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            background: white;
+            border-color: #3b82f6;
         }
 
         .tab-btn.active {
-            background: #1e3a8a;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
             color: white;
+            box-shadow: 0 8px 20px rgba(30,58,138,0.3);
+            border: none;
         }
 
         /* Panels */
         .panel {
-            background: white;
-            border-radius: 32px;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(2px);
+            border-radius: 36px;
             padding: 1.8rem;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
             margin-bottom: 30px;
-        }
-
-        .search-bar {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
+            border: 1px solid rgba(255,255,255,0.6);
+            transition: all 0.3s;
         }
 
         .search-bar input {
-            flex: 1;
-            padding: 12px 20px;
-            border-radius: 48px;
-            border: 1px solid #e2e8f0;
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.2s;
             background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s;
         }
 
         .search-bar input:focus {
-            border-color: #1e3a8a;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
             background: white;
-            box-shadow: 0 0 0 3px rgba(30,58,138,0.1);
         }
 
-        /* Table */
+        /* Table avec hover */
         table {
             width: 100%;
             border-collapse: collapse;
-            overflow-x: auto;
-            display: block;
-        }
-
-        th, td {
-            text-align: left;
-            padding: 14px 12px;
-            border-bottom: 1px solid #f0f2f5;
         }
 
         th {
+            background: #f8fafc;
             font-weight: 600;
-            color: #334155;
-            background: #fafcff;
-            font-size: 0.85rem;
+            color: #1e293b;
+            padding: 16px 12px;
+        }
+
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #f0f2f5;
+            transition: all 0.2s;
+        }
+
+        tr:hover td {
+            background: linear-gradient(90deg, #f8fafc, #ffffff);
+            transform: scale(1.01);
         }
 
         .product-img-placeholder {
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             background: linear-gradient(135deg, #eef2ff, #e0e7ff);
-            border-radius: 14px;
+            border-radius: 16px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             color: #1e3a8a;
+            transition: all 0.3s;
+        }
+
+        tr:hover .product-img-placeholder {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #dbeafe, #c7d2fe);
         }
 
         .action-icons i {
             margin: 0 8px;
             cursor: pointer;
-            font-size: 1.2rem;
-            transition: 0.2s;
+            transition: all 0.2s;
+            padding: 8px;
+            border-radius: 12px;
         }
 
-        .action-icons i:hover { transform: scale(1.15); }
+        .action-icons i:hover {
+            transform: scale(1.15);
+            background: #f1f5f9;
+        }
 
-        /* Modal */
+        /* Modal premium */
         .modal {
             position: fixed;
             top: 0;
@@ -264,130 +312,128 @@
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            backdrop-filter: blur(4px);
         }
 
         .modal-content {
-            background: white;
-            max-width: 620px;
+            background: linear-gradient(135deg, #ffffff, #fefefe);
+            max-width: 650px;
             width: 90%;
-            border-radius: 36px;
+            border-radius: 44px;
             padding: 2rem;
-            animation: slideIn 0.3s ease;
+            animation: fadeInUp 0.4s ease;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.2);
         }
 
-        @keyframes slideIn {
-            from { transform: translateY(-30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        /* Badges */
+        .stock-low {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #dc2626;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 40px;
+            display: inline-block;
         }
 
-        .form-group {
-            margin-bottom: 18px;
+        .badge {
+            background: #eef2ff;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 500;
         }
 
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #1e293b;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 24px;
-            border: 1px solid #e2e8f0;
-            font-size: 0.95rem;
-            outline: none;
-            transition: 0.2s;
-        }
-
-        .form-group input:focus {
-            border-color: #1e3a8a;
-            box-shadow: 0 0 0 3px rgba(30,58,138,0.1);
-        }
-
-        .price-row {
-            display: flex;
-            gap: 16px;
-        }
-
-        .price-row .form-group {
-            flex: 1;
-        }
-
-        .report-log {
-            background: #f8fafc;
-            border-radius: 24px;
-            padding: 1.2rem;
-            max-height: 320px;
-            overflow-y: auto;
-            font-family: monospace;
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-radius: 32px;
+            color: #94a3b8;
             font-size: 0.85rem;
-            line-height: 1.6;
+        }
+
+        .footer a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        .developer {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+
+        .login-container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .login-card {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 48px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .admin-avatars {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .admin-avatar {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            padding: 12px 20px;
+            border-radius: 60px;
+            color: white;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        button {
+            transition: all 0.3s;
+        }
+
+        button:active {
+            transform: scale(0.98);
         }
 
         .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            color: white;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
         }
-
-        .spinner {
-            border: 4px solid rgba(255,255,255,0.3);
-            border-top: 4px solid white;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            animation: spin 1s linear infinite;
-            margin-right: 15px;
-        }
-
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        .hidden { display: none; }
-        .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-        .init-status {
-            background: #fef9e3;
-            border-left: 5px solid #f59e0b;
-            padding: 14px 18px;
-            margin-bottom: 20px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-        .init-status.success { background: #e6f7e6; border-left-color: #16a34a; }
-        .stock-low { color: #dc2626; font-weight: bold; background: #fee2e2; border-radius: 24px; padding: 4px 12px; display: inline-block; }
-        .badge { background: #e2e8f0; padding: 4px 12px; border-radius: 24px; font-size: 0.7rem; font-weight: 500; }
-        .sale-success { color: #16a34a; font-weight: 600; }
 
         @media (max-width: 768px) {
-            th, td { font-size: 0.75rem; padding: 10px 6px; }
+            body { padding: 12px; }
             .header { flex-direction: column; text-align: center; }
-            .stat-value { font-size: 1.6rem; }
-            .panel { padding: 1.2rem; }
+            .stat-value { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="header">
+    <div class="header animate-in">
         <div class="logo">
-            <h1><i class="fas fa-store"></i> Kie Store Manager</h1>
-            <p>Gestion professionnelle • Stock • Ventes • Rapports</p>
+            <h1><i class="fas fa-crown"></i> Kie Store</h1>
+            <p><i class="fas fa-map-marker-alt"></i> Kolwezi - Mall La Joie | <i class="fas fa-clock"></i> Ouvert 7j/7</p>
         </div>
-        <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+        <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+            <div class="store-info">
+                <i class="fas fa-store"></i> Flagship Store Kolwezi
+            </div>
             <div class="currency-toggle">
                 <button id="currencyCDFBtn" class="currency-btn active"><i class="fas fa-money-bill-wave"></i> CDF</button>
                 <button id="currencyUSDBtn" class="currency-btn"><i class="fas fa-dollar-sign"></i> USD</button>
@@ -396,83 +442,79 @@
         </div>
     </div>
 
-    <div class="stats-grid">
-        <div class="stat-card"><div class="stat-title"><i class="fas fa-boxes"></i> Total en stock</div><div class="stat-value" id="totalArticles">0</div><div class="stat-sub">articles disponibles</div></div>
+    <div class="stats-grid" id="statsContainer">
+        <div class="stat-card"><div class="stat-title"><i class="fas fa-boxes"></i> Stock total</div><div class="stat-value" id="totalArticles">0</div></div>
         <div class="stat-card"><div class="stat-title"><i class="fas fa-chart-line"></i> Valeur du stock</div><div class="stat-value" id="totalValue">0</div><div class="stat-sub" id="totalValueSub"></div></div>
         <div class="stat-card"><div class="stat-title"><i class="fas fa-shopping-cart"></i> Ventes aujourd'hui</div><div class="stat-value" id="todaySales">0</div><div class="stat-sub" id="todaySalesSub"></div></div>
-        <div class="stat-card"><div class="stat-title"><i class="fas fa-receipt"></i> Transactions jour</div><div class="stat-value" id="todayTransactions">0</div><div class="stat-sub">ventes enregistrées</div></div>
+        <div class="stat-card"><div class="stat-title"><i class="fas fa-users"></i> Transactions jour</div><div class="stat-value" id="todayTransactions">0</div></div>
     </div>
 
     <div id="adminPanel" class="hidden">
         <div class="tabs">
-            <button class="tab-btn active" data-tab="stock"><i class="fas fa-database"></i> Gestion Stock</button>
-            <button class="tab-btn" data-tab="vente"><i class="fas fa-cash-register"></i> Nouvelle vente</button>
-            <button class="tab-btn" data-tab="rapport"><i class="fas fa-chart-bar"></i> Rapport journalier</button>
+            <button class="tab-btn active" data-tab="stock"><i class="fas fa-database"></i> 📦 Gestion Stock</button>
+            <button class="tab-btn" data-tab="vente"><i class="fas fa-cash-register"></i> 💰 Nouvelle vente</button>
+            <button class="tab-btn" data-tab="rapport"><i class="fas fa-chart-bar"></i> 📊 Rapport journalier</button>
         </div>
 
         <div id="stockTab" class="panel">
-            <div class="flex-between">
-                <h2><i class="fas fa-boxes"></i> Inventaire complet</h2>
-                <button id="addProductBtn" class="success"><i class="fas fa-plus-circle"></i> Ajouter un article</button>
+            <div class="flex-between" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;">
+                <h2 style="background: linear-gradient(135deg,#1e3a8a,#3b82f6); -webkit-background-clip:text; background-clip:text; color:transparent;"><i class="fas fa-boxes"></i> Inventaire Premium</h2>
+                <button id="addProductBtn" style="background: linear-gradient(135deg,#16a34a,#22c55e);"><i class="fas fa-plus-circle"></i> Nouvel article</button>
             </div>
             <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="🔍 Rechercher un produit, une marque ou une catégorie...">
-                <button id="resetSearchBtn" class="secondary"><i class="fas fa-times"></i> Réinitialiser</button>
+                <input type="text" id="searchInput" placeholder="🔍 Rechercher un produit, une marque... (iPhone, Samsung, Tecno...)">
+                <button id="resetSearchBtn" class="secondary"><i class="fas fa-undo-alt"></i> Réinitialiser</button>
             </div>
             <div style="overflow-x: auto;">
                 <table id="stockTable">
-                    <thead>
-                        <tr><th></th><th>Produit</th><th>Catégorie</th><th>Prix achat</th><th>Prix vente</th><th>Stock</th><th>Actions</th></tr>
-                    </thead>
+                    <thead><tr><th></th><th>Produit</th><th>Catégorie</th><th>Prix achat</th><th>Prix vente</th><th>Stock</th><th>Actions</th></tr></thead>
                     <tbody id="stockTableBody"></tbody>
                 </table>
             </div>
         </div>
 
         <div id="venteTab" class="panel hidden">
-            <h2><i class="fas fa-cash-register"></i> Enregistrer une vente</h2>
-            <div class="form-group">
-                <label><i class="fas fa-mobile-alt"></i> Article</label>
-                <select id="sellProductSelect"></select>
-            </div>
-            <div class="form-group">
-                <label><i class="fas fa-hashtag"></i> Quantité</label>
-                <input type="number" id="sellQty" value="1" min="1">
-            </div>
-            <div class="form-group">
-                <label><i class="fas fa-tag"></i> Prix unitaire</label>
-                <div class="price-row">
-                    <input type="number" id="sellPriceCDF" placeholder="Prix en Francs Congolais (CDF)">
-                    <input type="number" id="sellPriceUSD" placeholder="Prix en Dollars US (USD)">
-                </div>
-                <small style="color:#64748b;">💡 Remplissez l'une des deux valeurs (1 USD = 2850 CDF)</small>
-            </div>
-            <button id="confirmSaleBtn" class="success"><i class="fas fa-check-circle"></i> Valider la vente</button>
+            <h2 style="background: linear-gradient(135deg,#1e3a8a,#3b82f6); -webkit-background-clip:text; background-clip:text; color:transparent;"><i class="fas fa-cash-register"></i> Enregistrement vente</h2>
+            <div class="form-group"><label><i class="fas fa-mobile-alt"></i> Article</label><select id="sellProductSelect"></select></div>
+            <div class="form-group"><label><i class="fas fa-hashtag"></i> Quantité</label><input type="number" id="sellQty" value="1" min="1"></div>
+            <div class="form-group"><label><i class="fas fa-tag"></i> Prix unitaire</label><div class="price-row" style="display:flex; gap:15px;"><input type="number" id="sellPriceCDF" placeholder="CDF"><input type="number" id="sellPriceUSD" placeholder="USD"></div><small>💡 1 USD = 2850 CDF</small></div>
+            <button id="confirmSaleBtn" style="background: linear-gradient(135deg,#16a34a,#22c55e); width:100%;"><i class="fas fa-check-double"></i> Valider la vente</button>
             <div id="saleMessage" style="margin-top: 20px;"></div>
         </div>
 
         <div id="rapportTab" class="panel hidden">
-            <h2><i class="fas fa-chart-line"></i> Rapport journalier</h2>
-            <div id="dailyReportContent" class="report-log"></div>
-            <canvas id="salesChart" width="400" height="200" style="max-height: 260px; margin-top: 25px;"></canvas>
-            <div style="margin-top: 20px; text-align: center;">
-                <button id="refreshReportBtn" class="secondary"><i class="fas fa-sync-alt"></i> Actualiser le rapport</button>
+            <h2 style="background: linear-gradient(135deg,#1e3a8a,#3b82f6); -webkit-background-clip:text; background-clip:text; color:transparent;"><i class="fas fa-chart-line"></i> Rapport journalier</h2>
+            <div id="dailyReportContent" class="report-log" style="background:#f8fafc; border-radius:28px; padding:1.2rem;"></div>
+            <canvas id="salesChart" style="max-height: 260px; margin-top: 25px;"></canvas>
+            <button id="refreshReportBtn" class="secondary" style="margin-top: 20px;"><i class="fas fa-sync-alt"></i> Actualiser</button>
+        </div>
+    </div>
+
+    <div id="loginScreen" class="panel" style="text-align: center; background: linear-gradient(135deg, #ffffff, #fef9f0);">
+        <div class="login-container">
+            <i class="fas fa-store" style="font-size: 70px; background: linear-gradient(135deg,#1e3a8a,#3b82f6); -webkit-background-clip:text; background-clip:text; color:transparent;"></i>
+            <h1 style="margin: 20px 0 10px;">Kie Store</h1>
+            <p style="color: #5b6e8c;">Espace Administration</p>
+            <div class="admin-avatars">
+                <div class="admin-avatar"><i class="fas fa-user-tie"></i> Mr Kie</div>
+                <div class="admin-avatar"><i class="fas fa-user-check"></i> Mr Elie</div>
+            </div>
+            <div style="max-width: 320px; margin: 30px auto;">
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Mot de passe administrateur</label>
+                    <input type="password" id="adminPassword" placeholder="Entrez le mot de passe" style="text-align: center;">
+                </div>
+                <button id="loginBtn" style="background: linear-gradient(135deg,#1e3a8a,#3b82f6); width:100%;"><i class="fas fa-sign-in-alt"></i> Accéder à la gestion</button>
+                <p style="margin-top: 20px; font-size: 13px; color:#64748b;">🔐 Accès réservé aux administrateurs</p>
             </div>
         </div>
     </div>
 
-    <div id="loginScreen" class="panel" style="text-align: center;">
-        <i class="fas fa-shield-alt" style="font-size: 70px; color:#1e3a8a; margin-bottom: 20px; display: block;"></i>
-        <h2>Espace Administration</h2>
-        <p style="color: #5b6e8c; margin-bottom: 25px;">Connectez-vous pour gérer le stock, les ventes et consulter les rapports</p>
-        <div style="max-width: 340px; margin: 0 auto;">
-            <div class="form-group">
-                <label><i class="fas fa-key"></i> Mot de passe administrateur</label>
-                <input type="password" id="adminPassword" placeholder="Entrez le mot de passe">
-            </div>
-            <button id="loginBtn" style="width: 100%;"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
-            <p style="margin-top: 20px; font-size: 13px; color: #64748b;">🔐 Mot de passe par défaut: <strong style="color:#1e3a8a;">kieadmin2025</strong></p>
-        </div>
+    <div class="footer">
+        <p><i class="fas fa-map-marker-alt"></i> Kie Store - Mall La Joie, Kolwezi, RDC</p>
+        <p>📞 +243 XXX XXX XXX | ✉️ contact@kiestore.cd</p>
+        <p style="margin-top: 12px;">🚀 Application développée par <span class="developer">Gabby Umba</span> | © 2025 Tous droits réservés</p>
+        <p style="font-size: 0.7rem; margin-top: 8px;">Version Pro 2.0 - Gestion intelligente des stocks</p>
     </div>
 </div>
 
@@ -495,6 +537,7 @@
     const PRODUCTS_COLL = "products";
     const SALES_COLL = "sales";
     const USD_TO_CDF = 2850;
+    const ADMIN_PASSWORD = "STORE@@";
     
     let currentAdmin = false;
     let productsList = [];
@@ -518,84 +561,32 @@
     
     function generateCatalog() {
         const products = [];
-        const iphonePrices = {
-            7: { buy: 180000, sell: 250000 }, 8: { buy: 200000, sell: 280000 }, 9: { buy: 220000, sell: 310000 },
-            10: { buy: 250000, sell: 350000 }, 11: { buy: 280000, sell: 390000 }, 12: { buy: 320000, sell: 450000 },
-            13: { buy: 380000, sell: 520000 }, 14: { buy: 450000, sell: 620000 }, 15: { buy: 520000, sell: 720000 },
-            16: { buy: 620000, sell: 850000 }, 17: { buy: 750000, sell: 1000000 }
-        };
-        for (let s = 7; s <= 17; s++) {
-            const p = iphonePrices[s];
-            products.push(createProduct(`iPhone ${s}`, "iPhone", p.buy, p.sell, 6));
-            if (s >= 8) products.push(createProduct(`iPhone ${s} Plus`, "iPhone", p.buy + 50000, p.sell + 70000, 4));
-            if (s >= 11) products.push(createProduct(`iPhone ${s} Pro`, "iPhone", p.buy + 120000, p.sell + 150000, 3));
-            if (s >= 11) products.push(createProduct(`iPhone ${s} Pro Max`, "iPhone", p.buy + 180000, p.sell + 220000, 3));
-        }
-        const acc = ["Chargeur 20W", "AirPods Pro 2", "Câble Lightning", "Coque silicone", "Vitre trempée", "Protège-caméra"];
-        acc.forEach(a => products.push(createProduct(a, "Accessoire iPhone", 3000, 8000, 25)));
-        const sams = ["Galaxy S23", "Galaxy S24", "Galaxy A35", "Galaxy Z Fold5"];
-        sams.forEach(s => products.push(createProduct(s, "Samsung", 280000, 390000, 5)));
-        products.push(createProduct("Tecno Spark 20", "Tecno", 100000, 150000, 8));
-        products.push(createProduct("Infinix Note 40", "Infinix", 110000, 160000, 8));
-        products.push(createProduct("Itel S24", "Itel", 80000, 120000, 10));
-        products.push(createProduct("Oraimo PowerBank 20000mAh", "Power Bank", 15000, 28000, 15));
-        products.push(createProduct("HP Pavilion 15", "Ordinateur", 450000, 620000, 4));
-        products.push(createProduct("MacBook Air M2", "Ordinateur", 680000, 890000, 3));
-        products.push(createProduct("Souris Logitech", "Souris", 5000, 12000, 20));
-        products.push(createProduct("Beats Studio Pro", "Audio", 180000, 250000, 5));
-        products.push(createProduct("Ring Light 10\"", "Éclairage", 8000, 18000, 12));
-        products.push(createProduct("Stand téléphone", "Accessoire", 2000, 5000, 30));
-        products.push(createProduct("Tondeuse Wahl", "Soin", 25000, 45000, 6));
+        const iphonePrices = {7: {buy:180000,sell:250000},8:{buy:200000,sell:280000},9:{buy:220000,sell:310000},10:{buy:250000,sell:350000},11:{buy:280000,sell:390000},12:{buy:320000,sell:450000},13:{buy:380000,sell:520000},14:{buy:450000,sell:620000},15:{buy:520000,sell:720000},16:{buy:620000,sell:850000},17:{buy:750000,sell:1000000}};
+        for(let s=7;s<=17;s++){let p=iphonePrices[s];products.push(createProduct(`iPhone ${s}`,"iPhone",p.buy,p.sell,6));if(s>=8)products.push(createProduct(`iPhone ${s} Plus`,"iPhone",p.buy+50000,p.sell+70000,4));if(s>=11){products.push(createProduct(`iPhone ${s} Pro`,"iPhone",p.buy+120000,p.sell+150000,3));products.push(createProduct(`iPhone ${s} Pro Max`,"iPhone",p.buy+180000,p.sell+220000,3));}}
+        ["Chargeur 20W","AirPods Pro 2","Câble Lightning","Coque silicone","Vitre trempée"].forEach(a=>products.push(createProduct(a,"Accessoire iPhone",3000,8000,25)));
+        ["Galaxy S23","Galaxy S24","Galaxy A35","Galaxy Z Fold5"].forEach(s=>products.push(createProduct(s,"Samsung",280000,390000,5)));
+        products.push(createProduct("Tecno Spark 20","Tecno",100000,150000,8),createProduct("Infinix Note 40","Infinix",110000,160000,8),createProduct("Itel S24","Itel",80000,120000,10),createProduct("Oraimo PowerBank","Power Bank",15000,28000,15),createProduct("HP Pavilion 15","Ordinateur",450000,620000,4),createProduct("MacBook Air M2","Ordinateur",680000,890000,3),createProduct("Souris Logitech","Souris",5000,12000,20),createProduct("Beats Studio Pro","Audio",180000,250000,5),createProduct("Ring Light 10\"","Éclairage",8000,18000,12),createProduct("Stand téléphone","Accessoire",2000,5000,30),createProduct("Tondeuse Wahl","Soin",25000,45000,6));
         return products;
     }
     
     async function initDB() {
         const snap = await getDocs(collection(db, PRODUCTS_COLL));
         if (snap.empty) {
-            showLoading("Initialisation de Kie Store...");
+            const overlay = document.createElement("div"); overlay.className = "loading-overlay"; overlay.style.position="fixed"; overlay.style.top=0; overlay.style.left=0; overlay.style.width="100%"; overlay.style.height="100%"; overlay.style.background="rgba(0,0,0,0.8)"; overlay.style.display="flex"; overlay.style.alignItems="center"; overlay.style.justifyContent="center"; overlay.style.zIndex=9999; overlay.innerHTML='<div style="background:#1e293b; padding:30px 50px; border-radius:60px; color:white;"><div class="spinner" style="border:4px solid rgba(255,255,255,0.3); border-top-color:white; width:40px; height:40px; border-radius:50%; animation:spin 1s linear infinite; display:inline-block; margin-right:15px;"></div> Initialisation de Kie Store...</div>'; document.body.appendChild(overlay);
             const all = generateCatalog();
             const batch = writeBatch(db);
             for (const p of all) batch.set(doc(collection(db, PRODUCTS_COLL)), { ...p, createdAt: Timestamp.now(), updatedAt: Timestamp.now() });
             await batch.commit();
-            hideLoading();
-            const msg = document.createElement("div");
-            msg.className = "init-status success";
-            msg.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Base Kie Store initialisée ! ${all.length} articles prêts (iPhones 7 à 17, Samsung, accessoires, etc.)<br>💰 Taux: 1 USD = ${USD_TO_CDF} CDF`;
-            document.getElementById("loginScreen").insertBefore(msg, document.getElementById("loginScreen").firstChild);
+            overlay.remove();
         }
     }
     
-    function showLoading(msg) {
-        const d = document.createElement("div"); d.id = "loadingOverlay"; d.className = "loading-overlay";
-        d.innerHTML = `<div style="background:rgba(0,0,0,0.9); padding:25px 40px; border-radius:60px; display:flex;"><div class="spinner"></div><span>${msg}</span></div>`;
-        document.body.appendChild(d);
-    }
-    function hideLoading() { document.getElementById("loadingOverlay")?.remove(); }
+    async function loadProducts() { const snap = await getDocs(collection(db, PRODUCTS_COLL)); productsList = []; snap.forEach(d=>productsList.push({id:d.id,...d.data()})); renderStock(); updateStats(); updateSellSelect(); }
     
-    async function loadProducts() {
-        const snap = await getDocs(collection(db, PRODUCTS_COLL));
-        productsList = [];
-        snap.forEach(d => productsList.push({ id: d.id, ...d.data() }));
-        renderStock();
-        updateStats();
-        updateSellSelect();
-    }
-    
-    function renderStock(filter = currentSearchFilter) {
-        const tbody = document.getElementById("stockTableBody");
-        if (!tbody) return;
-        let filtered = filter ? productsList.filter(p => p.name.toLowerCase().includes(filter) || (p.category && p.category.toLowerCase().includes(filter))) : productsList;
-        tbody.innerHTML = filtered.map(p => `
-            <tr>
-                <td><div class="product-img-placeholder"><i class="fas fa-${p.category === 'iPhone' ? 'apple' : 'mobile-alt'}"></i></div></td>
-                <td><strong>${escapeHtml(p.name)}</strong></td>
-                <td><span class="badge">${escapeHtml(p.category || 'Général')}</span></td>
-                <td>${getDisplayPrice(p.buyPrice)}</td>
-                <td>${getDisplayPrice(p.sellPrice)}</td>
-                <td>${p.stock < 5 ? `<span class="stock-low">⚠️ ${p.stock}</span>` : p.stock}</td>
-                <td class="action-icons"><i class="fas fa-edit" onclick="edit('${p.id}')" style="color:#2563eb;"></i><i class="fas fa-trash-alt" onclick="del('${p.id}')" style="color:#dc2626;"></i></td>
-            </tr>
-        `).join("");
+    function renderStock(filter=currentSearchFilter) {
+        const tbody = document.getElementById("stockTableBody"); if(!tbody) return;
+        let filtered = filter ? productsList.filter(p=>p.name.toLowerCase().includes(filter)||(p.category&&p.category.toLowerCase().includes(filter))) : productsList;
+        tbody.innerHTML = filtered.map(p => `<tr><td><div class="product-img-placeholder"><i class="fas fa-${p.category==='iPhone'?'apple':'mobile-alt'}"></i></div></td><td><strong>${escapeHtml(p.name)}</strong></td><td><span class="badge">${escapeHtml(p.category||'Général')}</span></td><td>${getDisplayPrice(p.buyPrice)}</td><td>${getDisplayPrice(p.sellPrice)}</td><td>${p.stock<5?`<span class="stock-low">⚠️ ${p.stock}</span>`:p.stock}</td><td class="action-icons"><i class="fas fa-edit" onclick="edit('${p.id}')" style="color:#2563eb;"></i><i class="fas fa-trash-alt" onclick="del('${p.id}')" style="color:#dc2626;"></i></td></tr>`).join("");
     }
     
     async function updateStats() {
@@ -603,142 +594,30 @@
         const totalVal = productsList.reduce((s,p)=>s+((p.stock||0)*(p.buyPrice||0)),0);
         document.getElementById("totalArticles").innerText = totalArt;
         document.getElementById("totalValue").innerHTML = formatPrice(totalVal);
-        document.getElementById("totalValueSub").innerHTML = currentCurrency === "CDF" ? `≈ ${(totalVal/USD_TO_CDF).toFixed(2)} USD` : `≈ ${Math.round(totalVal).toLocaleString()} CDF`;
+        document.getElementById("totalValueSub").innerHTML = currentCurrency==="CDF"?`≈ ${(totalVal/USD_TO_CDF).toFixed(2)} USD`:`≈ ${Math.round(totalVal).toLocaleString()} CDF`;
         const today = new Date(); today.setHours(0,0,0,0);
-        const salesSnap = await getDocs(query(collection(db, SALES_COLL), where("date", ">=", Timestamp.fromDate(today))));
-        let total = 0;
-        salesSnap.forEach(s => total += s.data().totalAmountCDF || 0);
+        const salesSnap = await getDocs(query(collection(db, SALES_COLL), where("date",">=",Timestamp.fromDate(today))));
+        let total=0; salesSnap.forEach(s=>total+=s.data().totalAmountCDF||0);
         document.getElementById("todaySales").innerHTML = formatPrice(total);
-        document.getElementById("todaySalesSub").innerHTML = currentCurrency === "CDF" ? `≈ ${(total/USD_TO_CDF).toFixed(2)} USD` : `≈ ${Math.round(total).toLocaleString()} CDF`;
+        document.getElementById("todaySalesSub").innerHTML = currentCurrency==="CDF"?`≈ ${(total/USD_TO_CDF).toFixed(2)} USD`:`≈ ${Math.round(total).toLocaleString()} CDF`;
         document.getElementById("todayTransactions").innerText = salesSnap.size;
     }
     
-    function updateSellSelect() {
-        const sel = document.getElementById("sellProductSelect");
-        if (!sel) return;
-        sel.innerHTML = '<option value="">-- Sélectionner --</option>' + productsList.filter(p=>p.stock>0).map(p=>`<option value="${p.id}" data-price="${p.sellPrice}">${p.name} (stock:${p.stock}) - ${getDisplayPrice(p.sellPrice)}</option>`).join("");
-        sel.onchange = () => {
-            const opt = sel.options[sel.selectedIndex];
-            const pr = opt?.getAttribute("data-price") || 0;
-            document.getElementById("sellPriceCDF").value = pr;
-            document.getElementById("sellPriceUSD").value = (pr/USD_TO_CDF).toFixed(2);
-        };
-        if(sel.options.length>1) sel.dispatchEvent(new Event("change"));
-    }
-    
-    async function addProd(data) { await addDoc(collection(db, PRODUCTS_COLL), { ...data, createdAt: Timestamp.now(), updatedAt: Timestamp.now() }); await loadProducts(); }
-    async function updateProd(id, data) { await updateDoc(doc(db, PRODUCTS_COLL, id), { ...data, updatedAt: Timestamp.now() }); await loadProducts(); }
-    async function deleteProd(id) { if(confirm("Supprimer ?")) { await deleteDoc(doc(db, PRODUCTS_COLL, id)); await loadProducts(); } }
-    async function recordSale(pid, qty, priceCDF) {
-        const prod = productsList.find(p=>p.id===pid);
-        if(!prod) throw new Error("Article introuvable");
-        if(prod.stock < qty) throw new Error(`Stock: ${prod.stock}`);
-        await updateDoc(doc(db, PRODUCTS_COLL, pid), { stock: prod.stock - qty, updatedAt: Timestamp.now() });
-        await addDoc(collection(db, SALES_COLL), { productId: pid, productName: prod.name, quantity: qty, unitPriceCDF: priceCDF, totalAmountCDF: qty * priceCDF, date: Timestamp.now(), dateDay: new Date().toISOString().slice(0,10) });
-        await loadProducts();
-    }
-    
-    async function genReport() {
-        const today = new Date(); today.setHours(0,0,0,0);
-        const snap = await getDocs(query(collection(db, SALES_COLL), where("date", ">=", Timestamp.fromDate(today))));
-        const sales = []; snap.forEach(s=>sales.push(s.data()));
-        let total=0, items=0;
-        let html = `<strong>📅 Rapport du ${new Date().toLocaleDateString('fr-FR', { weekday:'long', year:'numeric', month:'long', day:'numeric' })}</strong><br><br>`;
-        if(sales.length===0) html += "<i>Aucune vente aujourd'hui</i>";
-        else sales.forEach(s=>{ total+=s.totalAmountCDF; items+=s.quantity; html+=`✔️ ${s.productName} x${s.quantity} → ${Math.round(s.totalAmountCDF).toLocaleString()} CDF (${(s.totalAmountCDF/USD_TO_CDF).toFixed(2)} USD)<br>`; });
-        html += `<hr><strong>💰 Total: ${Math.round(total).toLocaleString()} CDF | ${(total/USD_TO_CDF).toFixed(2)} USD</strong><br>📦 Articles: ${items} | Transactions: ${sales.length}`;
-        document.getElementById("dailyReportContent").innerHTML = html;
-        const ctx = document.getElementById("salesChart").getContext("2d");
-        if(chartInstance) chartInstance.destroy();
-        const hourly = Array(12).fill(0);
-        sales.forEach(s=>{ const h = s.date.toDate().getHours(); const idx=Math.floor(h/2); if(idx<12) hourly[idx]+=s.totalAmountCDF; });
-        const data = currentCurrency === "CDF" ? hourly : hourly.map(v=>v/USD_TO_CDF);
-        chartInstance = new Chart(ctx, { type:'bar', data:{ labels:['0-2','2-4','4-6','6-8','8-10','10-12','12-14','14-16','16-18','18-20','20-22','22-24'], datasets:[{ label:`Ventes (${currentCurrency})`, data, backgroundColor:'#3b82f6', borderRadius:8 }] }, options:{ responsive:true } });
-    }
-    
-    function escapeHtml(s) { return String(s).replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
-    
-    function showModal(edit=false, prod=null) {
-        const m = document.createElement("div"); m.className = "modal";
-        m.innerHTML = `<div class="modal-content"><h3>${edit ? "✏️ Modifier" : "➕ Ajouter"}</h3>
-            <div class="form-group"><label>Nom</label><input id="modalName" value="${edit ? escapeHtml(prod.name) : ''}"></div>
-            <div class="form-group"><label>Catégorie</label><input id="modalCategory" value="${edit ? escapeHtml(prod.category||'') : ''}"></div>
-            <div class="price-row"><div class="form-group"><label>Achat (CDF)</label><input id="modalBuyCDF" type="number" value="${edit ? prod.buyPrice : ''}"></div><div class="form-group"><label>Achat (USD)</label><input id="modalBuyUSD" type="number" value="${edit ? (prod.buyPrice/USD_TO_CDF).toFixed(2) : ''}"></div></div>
-            <div class="price-row"><div class="form-group"><label>Vente (CDF)</label><input id="modalSellCDF" type="number" value="${edit ? prod.sellPrice : ''}"></div><div class="form-group"><label>Vente (USD)</label><input id="modalSellUSD" type="number" value="${edit ? (prod.sellPrice/USD_TO_CDF).toFixed(2) : ''}"></div></div>
-            <div class="form-group"><label>Stock</label><input id="modalStock" type="number" value="${edit ? prod.stock : ''}"></div>
-            <div style="display:flex; gap:12px; justify-content:flex-end;"><button id="cancelModal" class="secondary">Annuler</button><button id="saveModal" class="success">Enregistrer</button></div></div>`;
-        document.body.appendChild(m);
-        const bc = document.getElementById("modalBuyCDF"), bu = document.getElementById("modalBuyUSD"), sc = document.getElementById("modalSellCDF"), su = document.getElementById("modalSellUSD");
-        bc.oninput = () => bu.value = (bc.value/USD_TO_CDF).toFixed(2);
-        bu.oninput = () => bc.value = Math.round(bu.value*USD_TO_CDF);
-        sc.oninput = () => su.value = (sc.value/USD_TO_CDF).toFixed(2);
-        su.oninput = () => sc.value = Math.round(su.value*USD_TO_CDF);
-        document.getElementById("cancelModal").onclick = () => m.remove();
-        document.getElementById("saveModal").onclick = async () => {
-            const data = { name: document.getElementById("modalName").value, category: document.getElementById("modalCategory").value, buyPrice: Math.round(parseFloat(document.getElementById("modalBuyCDF").value)||0), sellPrice: Math.round(parseFloat(document.getElementById("modalSellCDF").value)||0), stock: parseInt(document.getElementById("modalStock").value) };
-            if(edit && prod.id) await updateProd(prod.id, data);
-            else await addProd(data);
-            m.remove();
-        };
-    }
-    
-    window.edit = (id) => { const p = productsList.find(p=>p.id===id); if(p) showModal(true, p); };
-    window.del = deleteProd;
-    
-    function setCurrency(curr) {
-        currentCurrency = curr;
-        document.getElementById("currencyCDFBtn").classList.toggle("active", curr==="CDF");
-        document.getElementById("currencyUSDBtn").classList.toggle("active", curr==="USD");
-        renderStock(); updateStats(); updateSellSelect(); genReport();
-    }
-    
-    function showAdmin(show) {
-        document.getElementById("adminPanel").classList.toggle("hidden", !show);
-        document.getElementById("loginScreen").classList.toggle("hidden", show);
-        if(show) {
-            loadProducts(); genReport();
-            document.querySelectorAll(".tab-btn").forEach(btn => btn.onclick = () => {
-                document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
-                btn.classList.add("active");
-                document.getElementById("stockTab").classList.add("hidden");
-                document.getElementById("venteTab").classList.add("hidden");
-                document.getElementById("rapportTab").classList.add("hidden");
-                if(btn.dataset.tab==="stock") document.getElementById("stockTab").classList.remove("hidden");
-                if(btn.dataset.tab==="vente") { document.getElementById("venteTab").classList.remove("hidden"); updateSellSelect(); }
-                if(btn.dataset.tab==="rapport") { document.getElementById("rapportTab").classList.remove("hidden"); genReport(); }
-            });
-            document.getElementById("addProductBtn").onclick = () => showModal(false);
-            document.getElementById("resetSearchBtn").onclick = () => { document.getElementById("searchInput").value = ""; currentSearchFilter = ""; renderStock(); };
-            document.getElementById("searchInput").addEventListener("input", e => { currentSearchFilter = e.target.value.toLowerCase(); renderStock(); });
-            document.getElementById("refreshReportBtn").onclick = () => genReport();
-            document.getElementById("confirmSaleBtn").onclick = async () => {
-                const pid = document.getElementById("sellProductSelect").value, qty = parseInt(document.getElementById("sellQty").value);
-                let cdf = parseFloat(document.getElementById("sellPriceCDF").value), usd = parseFloat(document.getElementById("sellPriceUSD").value);
-                if(!pid) return alert("Choisissez un article");
-                if(qty<1) return alert("Quantité invalide");
-                if(!isNaN(usd) && usd>0) cdf = usd * USD_TO_CDF;
-                if(isNaN(cdf) || cdf<=0) return alert("Prix invalide");
-                try { await recordSale(pid, qty, cdf); document.getElementById("saleMessage").innerHTML = `<span class="sale-success">✅ Vente ${Math.round(cdf*qty).toLocaleString()} CDF (${(cdf*qty/USD_TO_CDF).toFixed(2)} USD)</span>`; setTimeout(()=>document.getElementById("saleMessage").innerHTML="",3000); genReport(); updateStats(); }
-                catch(e){ alert(e.message); }
-            };
-        }
-    }
-    
-    document.getElementById("loginBtn").onclick = () => {
-        if(document.getElementById("adminPassword").value === "kieadmin2025") {
-            showAdmin(true);
-            document.getElementById("authSection").innerHTML = `<div class="admin-badge"><i class="fas fa-user-cog"></i> Admin</div><button id="logoutBtn" class="secondary"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>`;
-            document.getElementById("logoutBtn").onclick = () => { showAdmin(false); document.getElementById("authSection").innerHTML = ""; location.reload(); };
-        } else alert("Mot de passe incorrect");
-    };
-    
-    document.getElementById("currencyCDFBtn").onclick = () => setCurrency("CDF");
-    document.getElementById("currencyUSDBtn").onclick = () => setCurrency("USD");
-    
-    const scdf = document.getElementById("sellPriceCDF"), susd = document.getElementById("sellPriceUSD");
-    if(scdf && susd) { scdf.oninput = () => { if(scdf.value) susd.value = (scdf.value/USD_TO_CDF).toFixed(2); }; susd.oninput = () => { if(susd.value) scdf.value = Math.round(susd.value*USD_TO_CDF); }; }
-    
-    (async () => { await initDB(); await loadProducts(); showAdmin(false); })();
+    function updateSellSelect() { const sel = document.getElementById("sellProductSelect"); if(!sel) return; sel.innerHTML = '<option value="">-- Sélectionner --</option>'+productsList.filter(p=>p.stock>0).map(p=>`<option value="${p.id}" data-price="${p.sellPrice}">${p.name} (stock:${p.stock}) - ${getDisplayPrice(p.sellPrice)}</option>`).join(""); sel.onchange=()=>{const opt=sel.options[sel.selectedIndex];const pr=opt?.getAttribute("data-price")||0;document.getElementById("sellPriceCDF").value=pr;document.getElementById("sellPriceUSD").value=(pr/USD_TO_CDF).toFixed(2);};if(sel.options.length>1)sel.dispatchEvent(new Event("change"));}
+    async function addProd(data) { await addDoc(collection(db,PRODUCTS_COLL),{...data,createdAt:Timestamp.now(),updatedAt:Timestamp.now()}); await loadProducts(); }
+    async function updateProd(id,data) { await updateDoc(doc(db,PRODUCTS_COLL,id),{...data,updatedAt:Timestamp.now()}); await loadProducts(); }
+    async function deleteProd(id) { if(confirm("Supprimer cet article ?")) { await deleteDoc(doc(db,PRODUCTS_COLL,id)); await loadProducts(); } }
+    async function recordSale(pid,qty,priceCDF) { const prod = productsList.find(p=>p.id===pid); if(!prod) throw new Error("Article introuvable"); if(prod.stock<qty) throw new Error(`Stock: ${prod.stock}`); await updateDoc(doc(db,PRODUCTS_COLL,pid),{stock:prod.stock-qty,updatedAt:Timestamp.now()}); await addDoc(collection(db,SALES_COLL),{productId:pid,productName:prod.name,quantity:qty,unitPriceCDF:priceCDF,totalAmountCDF:qty*priceCDF,date:Timestamp.now(),dateDay:new Date().toISOString().slice(0,10)}); await loadProducts(); }
+    async function genReport() { const today=new Date();today.setHours(0,0,0,0); const snap=await getDocs(query(collection(db,SALES_COLL),where("date",">=",Timestamp.fromDate(today)))); const sales=[]; snap.forEach(s=>sales.push(s.data())); let total=0,items=0; let html=`<strong>📅 ${new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</strong><br><br>`; if(sales.length===0) html+="<i>Aucune vente aujourd'hui</i>"; else sales.forEach(s=>{total+=s.totalAmountCDF; items+=s.quantity; html+=`✔️ ${s.productName} x${s.quantity} → ${Math.round(s.totalAmountCDF).toLocaleString()} CDF (${(s.totalAmountCDF/USD_TO_CDF).toFixed(2)} USD)<br>`;}); html+=`<hr><strong>💰 Total: ${Math.round(total).toLocaleString()} CDF | ${(total/USD_TO_CDF).toFixed(2)} USD</strong><br>📦 Articles: ${items} | Transactions: ${sales.length}`; document.getElementById("dailyReportContent").innerHTML=html; const ctx=document.getElementById("salesChart").getContext("2d"); if(chartInstance) chartInstance.destroy(); const hourly=Array(12).fill(0); sales.forEach(s=>{const h=s.date.toDate().getHours();const idx=Math.floor(h/2);if(idx<12) hourly[idx]+=s.totalAmountCDF;}); const data=currentCurrency==="CDF"?hourly:hourly.map(v=>v/USD_TO_CDF); chartInstance=new Chart(ctx,{type:'bar',data:{labels:['0-2','2-4','4-6','6-8','8-10','10-12','12-14','14-16','16-18','18-20','20-22','22-24'],datasets:[{label:`Ventes (${currentCurrency})`,data,backgroundColor:'#3b82f6',borderRadius:10}]},options:{responsive:true}}); }
+    function escapeHtml(s){return String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]);}
+    function showModal(edit=false,prod=null){const m=document.createElement("div");m.className="modal";m.innerHTML=`<div class="modal-content"><h3>${edit?"✏️ Modifier":"➕ Ajouter"}</h3><div class="form-group"><label>Nom</label><input id="modalName" value="${edit?escapeHtml(prod.name):''}"></div><div class="form-group"><label>Catégorie</label><input id="modalCategory" value="${edit?escapeHtml(prod.category||''):''}"></div><div style="display:flex;gap:15px;"><div class="form-group" style="flex:1"><label>Achat CDF</label><input id="modalBuyCDF" type="number" value="${edit?prod.buyPrice:''}"></div><div class="form-group" style="flex:1"><label>Achat USD</label><input id="modalBuyUSD" type="number" value="${edit?(prod.buyPrice/USD_TO_CDF).toFixed(2):''}"></div></div><div style="display:flex;gap:15px;"><div class="form-group" style="flex:1"><label>Vente CDF</label><input id="modalSellCDF" type="number" value="${edit?prod.sellPrice:''}"></div><div class="form-group" style="flex:1"><label>Vente USD</label><input id="modalSellUSD" type="number" value="${edit?(prod.sellPrice/USD_TO_CDF).toFixed(2):''}"></div></div><div class="form-group"><label>Stock</label><input id="modalStock" type="number" value="${edit?prod.stock:''}"></div><div style="display:flex;gap:12px;justify-content:flex-end;"><button id="cancelModal" class="secondary">Annuler</button><button id="saveModal" class="success">Enregistrer</button></div></div>`;document.body.appendChild(m);const bc=document.getElementById("modalBuyCDF"),bu=document.getElementById("modalBuyUSD"),sc=document.getElementById("modalSellCDF"),su=document.getElementById("modalSellUSD");if(bc&&bu){bc.oninput=()=>bu.value=(bc.value/USD_TO_CDF).toFixed(2);bu.oninput=()=>bc.value=Math.round(bu.value*USD_TO_CDF);sc.oninput=()=>su.value=(sc.value/USD_TO_CDF).toFixed(2);su.oninput=()=>sc.value=Math.round(su.value*USD_TO_CDF);}document.getElementById("cancelModal").onclick=()=>m.remove();document.getElementById("saveModal").onclick=async()=>{const data={name:document.getElementById("modalName").value,category:document.getElementById("modalCategory").value,buyPrice:Math.round(parseFloat(document.getElementById("modalBuyCDF").value)||0),sellPrice:Math.round(parseFloat(document.getElementById("modalSellCDF").value)||0),stock:parseInt(document.getElementById("modalStock").value)};if(edit&&prod.id)await updateProd(prod.id,data);else await addProd(data);m.remove();};}
+    window.edit=(id)=>{const p=productsList.find(p=>p.id===id);if(p)showModal(true,p);};window.del=deleteProd;
+    function setCurrency(curr){currentCurrency=curr;document.getElementById("currencyCDFBtn").classList.toggle("active",curr==="CDF");document.getElementById("currencyUSDBtn").classList.toggle("active",curr==="USD");renderStock();updateStats();updateSellSelect();genReport();}
+    function showAdmin(show){document.getElementById("adminPanel").classList.toggle("hidden",!show);document.getElementById("loginScreen").classList.toggle("hidden",show);if(show){loadProducts();genReport();document.querySelectorAll(".tab-btn").forEach(btn=>btn.onclick=()=>{document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");document.getElementById("stockTab").classList.add("hidden");document.getElementById("venteTab").classList.add("hidden");document.getElementById("rapportTab").classList.add("hidden");if(btn.dataset.tab==="stock")document.getElementById("stockTab").classList.remove("hidden");if(btn.dataset.tab==="vente"){document.getElementById("venteTab").classList.remove("hidden");updateSellSelect();}if(btn.dataset.tab==="rapport"){document.getElementById("rapportTab").classList.remove("hidden");genReport();}});document.getElementById("addProductBtn").onclick=()=>showModal(false);document.getElementById("resetSearchBtn").onclick=()=>{document.getElementById("searchInput").value="";currentSearchFilter="";renderStock();};document.getElementById("searchInput").addEventListener("input",e=>{currentSearchFilter=e.target.value.toLowerCase();renderStock();});document.getElementById("refreshReportBtn").onclick=()=>genReport();document.getElementById("confirmSaleBtn").onclick=async()=>{const pid=document.getElementById("sellProductSelect").value,qty=parseInt(document.getElementById("sellQty").value);let cdf=parseFloat(document.getElementById("sellPriceCDF").value),usd=parseFloat(document.getElementById("sellPriceUSD").value);if(!pid)return alert("Choisissez un article");if(qty<1)return alert("Quantité invalide");if(!isNaN(usd)&&usd>0)cdf=usd*USD_TO_CDF;if(isNaN(cdf)||cdf<=0)return alert("Prix invalide");try{await recordSale(pid,qty,cdf);document.getElementById("saleMessage").innerHTML=`<span style="color:#16a34a; font-weight:600;">✅ Vente ${Math.round(cdf*qty).toLocaleString()} CDF (${(cdf*qty/USD_TO_CDF).toFixed(2)} USD)</span>`;setTimeout(()=>document.getElementById("saleMessage").innerHTML="",3000);genReport();updateStats();}catch(e){alert(e.message);}};}}
+    document.getElementById("loginBtn").onclick=()=>{if(document.getElementById("adminPassword").value===ADMIN_PASSWORD){showAdmin(true);document.getElementById("authSection").innerHTML=`<div class="admin-badge"><i class="fas fa-user-tie"></i> Kie & Elie | Admin</div><button id="logoutBtn" class="secondary"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>`;document.getElementById("logoutBtn").onclick=()=>{showAdmin(false);document.getElementById("authSection").innerHTML="";location.reload();};}else alert("🔐 Mot de passe incorrect. Accès réservé aux administrateurs.");};
+    document.getElementById("currencyCDFBtn").onclick=()=>setCurrency("CDF");document.getElementById("currencyUSDBtn").onclick=()=>setCurrency("USD");
+    const scdf=document.getElementById("sellPriceCDF"),susd=document.getElementById("sellPriceUSD");if(scdf&&susd){scdf.oninput=()=>{if(scdf.value)susd.value=(scdf.value/USD_TO_CDF).toFixed(2);};susd.oninput=()=>{if(susd.value)scdf.value=Math.round(susd.value*USD_TO_CDF);};}
+    (async()=>{await initDB();await loadProducts();showAdmin(false);})();
 </script>
 </body>
 </html>
